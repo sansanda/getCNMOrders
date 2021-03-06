@@ -30,8 +30,8 @@ def main():
     cnmWebOrdersScrapper.doLogin()
     cnmWebOrdersScrapper.goToPage(orders_url)
     cnmWebOrdersScrapper.goToYear(2017)
-    print(cnmWebOrdersScrapper.getActualYearOrdersCodes())
-
+    #print(cnmWebOrdersScrapper.getActualYearOrdersCodes())
+    cnmWebOrdersScrapper.test()
 
 
 if __name__ == "__main__":

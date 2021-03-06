@@ -59,3 +59,6 @@ class CNMWebOrdersScrapper():
             #ordersCodes.append(int(cols[0].text))
         return ordersCodes
 
+    def test(self):
+        self.driver.execute_script('purchase.listRequests(2020,1,Tot);')
+
