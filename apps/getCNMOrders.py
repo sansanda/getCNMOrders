@@ -17,9 +17,15 @@ import pandas as pd
 
 
 def main():
-    argumentsList = sys.argv[1:]
 
-    print(argumentsList)
+    """
+    Clase principal que ejecuta una serie de pasos con el objetivo de acceder y guardar (serializar, json y csv) todos los datos de las ordenes de compra
+    (del imb-cnm-csic) de un periodo de tiempo marcado por dos años (parámetros de entrada) dado un usuario y pass determinado.
+    Más tarde dicho csv puede ser importado por un programa de tratamiento de datos como excel y realizar filtros (p.e. por proveedor, etc...)
+    :return: None
+    """
+    #fase de recuperacion de los argumentos pasados durante la llamada al main
+    argumentsList = sys.argv[1:]
 
     login_url = argumentsList[0]
     orders_url = argumentsList[1]
@@ -93,8 +99,6 @@ def main():
 
             webOrders.append(webOrderData)
 
-    # print(webOrders)
-
     # fase de volcado de las ordenes de compra del listado webOrders a un fichero usando pickle
     pickle_file = open(savingFilePath + '/cnmOrders.pickle', 'wb')
     pickle.dump(webOrders, pickle_file)
@@ -119,10 +123,14 @@ def main():
 
             allWebOrders_Lines.append(webOrderLine)
 
+    #Transformación de todas las ordenes de compra a objeto json
     wolsJSONData = json.dumps(allWebOrders_Lines, indent=4, cls=WebOrderLine.WebOrderLineEncoder)
     print(wolsJSONData)
 
+    #transformacion de json a df de pandas (paso intermedio con el objetivo de usar pandas para guardar las ordenes de compra en formato csv)
     df = pd.read_json(wolsJSONData)
+
+    #volcado de las ordenes de compra a csv
     df.to_csv(savingFilePath + '/cnmOrders.csv', encoding='utf-8', index=False)
 
     # fase de finalización
